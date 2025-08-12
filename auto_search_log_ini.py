@@ -4,6 +4,7 @@ import configparser
 from collections import Counter, defaultdict
 import sys
 from concurrent.futures import ProcessPoolExecutor
+import subprocess
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "log_config.ini")
@@ -138,6 +139,11 @@ if __name__ == "__main__":
             with open(output_file, 'w', encoding='utf-8') as out:
                 out.write("\n".join(results))
             print(f"검색 결과가 {output_file}에 저장되었습니다.")
+            # 저장 후 실행
+            try:
+                subprocess.run([output_file], shell=True)  # 기본 프로그램으로 실행
+            except Exception as e:
+                print(f"결과 파일 실행 실패: {e}")
         else:
             print("검색 결과를 저장하지 않았습니다.")
     else:
